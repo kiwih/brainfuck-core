@@ -1,4 +1,4 @@
-//`default_nettype none
+// `default_nettype none //Uncomment this if you want better error checking
 `include "../verilog/brainfuck_constants.sv"
 
 module brainfuck_core#(
@@ -30,11 +30,7 @@ module brainfuck_core#(
 	//I/O to STDOUT
 	output [7:0] tx_data,
 	input tx_busy,
-	output reg tx_wr,
-	
-	//debug signals
-	output wire [2:0] debug_state,
-	output wire [7:0] debug_nest_level
+	output reg tx_wr
 );
 
 //program counter
@@ -121,8 +117,6 @@ always_comb begin
 	endcase
 end
 
-assign debug_nest_level = nest_level_out;
-
 brainfuck_core_fsm #(
 	.PROG_DATA_WIDTH(PROG_DATA_WIDTH),
 	.MEM_DATA_WIDTH(MEM_DATA_WIDTH)
@@ -151,9 +145,7 @@ brainfuck_core_fsm #(
 	.nest_level_clear(nest_level_clear),
 	.nest_level_wr_en(nest_level_wr_en),
 	.tx_wr(tx_wr),
-	.rx_clear(rx_clear),
-	
-	.debug_state(debug_state)
+	.rx_clear(rx_clear)
 );
 
 endmodule

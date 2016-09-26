@@ -1,4 +1,4 @@
-//`default_nettype none
+// `default_nettype none //Uncomment this if you want better error checking
 `include "../verilog/brainfuck_constants.sv"
 
 module top_cyclone_four_de2_115#(
@@ -7,7 +7,7 @@ module top_cyclone_four_de2_115#(
 	parameter MEM_ADDR_WIDTH = 16,
 	parameter MEM_DATA_WIDTH = 9,
 
-	parameter PROGRAM_NAME = "/home/hammond/Dropbox/brainfuck-core/prog/beer.txt"
+	parameter PROGRAM_NAME = "../prog/beer.txt"
 )(
 	input CLOCK_50,
 	input [3:0] SW,
@@ -16,20 +16,6 @@ module top_cyclone_four_de2_115#(
 	output UART_TXD,
 	input UART_RXD
 );
-
-
-//reg [32:0] clk_div_count;
-//
-//reg clk;
-//
-//always@(posedge CLOCK_50) begin
-//	if(clk_div_count == 32'hFFFF) begin
-//		clk <= ~clk;
-//		clk_div_count <= 0;
-//	end else begin
-//		clk_div_count <= clk_div_count + 1'b1;
-//	end
-//end
 
 wire clk;
 assign clk = CLOCK_50;
@@ -86,12 +72,12 @@ uart #
 )
 uart0
 (
-    .clk(CLOCK_50),
+    .clk(clk),
     .rst(rst),
 
     .input_axis_tdata(tx_data),
     .input_axis_tvalid(tx_wr),
-    //.input_axis_tready(tx_ready), //don't care
+    //.input_axis_tready(tx_ready), //don't care about the AXIS api
 
     .output_axis_tdata(rx_data),
     .output_axis_tvalid(rx_ready),
@@ -102,10 +88,10 @@ uart0
 
     .tx_busy(tx_busy),
     .rx_busy(rx_busy),
-    //output wire                   rx_overrun_error,
-    //output wire                   rx_frame_error,
+    //output wire rx_overrun_error //rx_overrun and rx_frame errors are not passed on to the bfcore at this stage
+    //output wire rx_frame_error
 
-    .prescale(16'd651)//input  wire [15:0]            prescale (fclk/baud*8)
+    .prescale(16'd651)	//prescale (fclk/baud*8) (50MHz / 9600 * 8)
 );
 
 brainfuck_core #(
@@ -132,19 +118,13 @@ brainfuck_core #(
 	
 	.tx_data(tx_data),
 	.tx_busy(tx_busy),
-	.tx_wr(tx_wr),
-	
-	.debug_state(debug_state),
-	.debug_nest_level(LEDR[15:8])
+	.tx_wr(tx_wr)
 	
 );
 
 assign LEDG[8:0] = prog_addr[8:0];
 assign LEDR[7:0] = mem_data_rd[7:0];
 assign LEDR[17] = clk;
-//assign LEDR[15:8] = mem_addr[7:0];
-//assign LEDR[17:16] = debug_state[2:1];
-
 endmodule
 
 `default_nettype wire

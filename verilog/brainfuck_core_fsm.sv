@@ -47,13 +47,6 @@ module brainfuck_core_fsm#(
 reg [2:0] state = `S_POWERUP;
 reg [2:0] next_state = `S_POWERUP;
 
-//initial begin
-//	state <= 3'h0;
-//	next_state <= 3'h0;
-//end
-
-assign debug_state = state;
-
 //state register logic
 always @(posedge clk or posedge rst) begin
 	if (rst)
@@ -61,10 +54,6 @@ always @(posedge clk or posedge rst) begin
   else
 		state <= next_state;
 end
-
-//assign debug_current_state = state;
-//mux for ptr register
-
 
 //next state/output logic
 always_comb begin
@@ -96,9 +85,7 @@ always_comb begin
 	case(state)
 	
 		`S_POWERUP: begin
-			//prog_rd_en <= 1;
 			next_state <= `S_FETCH;
-			
 		end
 	
 		`S_FETCH: begin
@@ -151,6 +138,7 @@ always_comb begin
 				next_state <= `S_DECODE;
 			end
 		end
+		
 		`S_MEMORY: begin
 			if(prog_instr == `I_PLUS || prog_instr == `I_MINUS || prog_instr == `I_COMMA) begin
 				mem_wr_en <= 1;
@@ -176,15 +164,13 @@ always_comb begin
 				pc_wr_en <= 1;
 				next_state <= `S_FETCH;
 			end
-		
 		end
-		`S_LOOP_FETCH: begin
+		
+		`S_LOOP_FETCH: begin //yes, this state really only has one transition
 			prog_rd_en <= 1;
 			next_state <= `S_LOOP;
-		
-		
-		
 		end
+		
 		default: begin //LOOP
 			if(((prog_instr == `I_CLOSE && dir == `DIR_FORWARDS) || (prog_instr == `I_OPEN && dir == `DIR_BACKWARDS)) && nest_level == 0) begin
 				//correct bracket, nest level 0, exit search
@@ -225,11 +211,8 @@ always_comb begin
 				end
 				next_state <= `S_LOOP_FETCH;
 			end
-		
 		end
 		
-	
-	
 	endcase
 end
 
