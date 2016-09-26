@@ -1,11 +1,9 @@
 # brainfuck-core
-Verilog implementation of a microprocessor core implementing Brainfuck as its ISA.
-
 This is a Verilog/SystemVerilog\* implementation of a microprocessor that executes [Brainfuck](https://en.wikipedia.org/wiki/Brainfuck) code natively.
 
-It is implemented as a multi-cycle Harvard architecture. Program/Data memory widths and sizes are configurable from the top-level file. I used the excellent UART from https://github.com/alexforencich/verilog-uart/ to implement blocking STDIN and STDOUT resources for running programs.
+It is implemented as a multi-cycle Harvard architecture, and the excellent UART from https://github.com/alexforencich/verilog-uart/ was used to implement blocking STDIN and STDOUT. Program/Data memory widths and sizes are completely parameterized throughout the source code.
 
-The FSM at the core of the control unit implements the following FSM:
+The FSM at the core of the control unit implements the following diagram:
 ![Control unit FSM](/doc/bfcore - fsm.png?raw=true "")
 
 \*: While features of SystemVerilog were used, this is primarily a Verilog implementation.
