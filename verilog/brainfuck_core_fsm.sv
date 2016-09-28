@@ -1,12 +1,12 @@
 `default_nettype none
 `include "../verilog/brainfuck_constants.sv"
 
-`define 	S_POWERUP		3'h0
-`define 	S_FETCH			3'h1
-`define 	S_DECODE			3'h2
-`define 	S_MEMORY			3'h3
-`define 	S_LOOP			3'h4
-`define 	S_LOOP_FETCH	3'h5
+`define		S_POWERUP		3'h0
+`define		S_FETCH			3'h1
+`define		S_DECODE		3'h2
+`define		S_MEMORY		3'h3
+`define		S_LOOP			3'h4
+`define		S_LOOP_FETCH		3'h5
 
 module brainfuck_core_fsm#(
 	parameter PROG_DATA_WIDTH = 3,
@@ -51,7 +51,7 @@ reg [2:0] next_state = `S_POWERUP;
 always @(posedge clk or posedge rst) begin
 	if (rst)
 		state <= `S_POWERUP;
-  else
+	else
 		state <= next_state;
 end
 
