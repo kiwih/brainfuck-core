@@ -30,7 +30,7 @@ Brainfuck instructions are provided in the memory file as one of 8 values:
            +           |   010    | increment the byte at the data pointer                                                 
            -           |   011    | decrement the byte at the data pointer                                                 
            .           |   100    | output the byte at the data pointer                                                    
-           ,           |   101    | input a byte to the data pointer                                                       
+           ,           |   101    | input a byte and store it at the data pointer                                            
            [           |   110    | if the byte at the data pointer == 0 jump forward to the command after the matching ]  
            ]           |   111    | if the byte at the data pointer == 1 jump backward to the command after the matching [ 
 
