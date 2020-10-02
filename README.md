@@ -4,7 +4,8 @@ This is a Verilog/SystemVerilog\* implementation of a microprocessor that execut
 It is implemented as a multi-cycle Harvard architecture, and the excellent UART from https://github.com/alexforencich/verilog-uart/ was used to implement blocking STDIN and STDOUT. Program/Data memory widths and sizes are completely parameterized throughout the source code.
 
 The FSM at the core of the control unit implements the following diagram:
-![Control unit FSM](/doc/bfcore - fsm.png?raw=true "")
+
+![Control unit FSM](/doc/bfcore%20-%20fsm.png?raw=true "Control unit FSM")
 
 \*: While features of SystemVerilog were used, this is primarily a Verilog implementation.
 
